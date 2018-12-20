@@ -12,13 +12,25 @@ class Box extends Component {
       }
     }
   }
+
+
   GetBoxValue(e){
     console.log("ID:", e.target.id);
   }
 
+handleIndexChange(event){
+    this.props.getIndex(event.target.id)
+  }
+
+  onClickFunction(event){
+    this.GetBoxValue(event)
+    this.handleIndexChange(event)
+
+  }
+
   render(){
     return (
-      <div style={this.state.styles} id={this.props.id} className="Boxes" onClick={this.GetBoxValue.bind(this)}>
+      <div style={this.state.styles} id={this.props.id} className="Boxes" onClick={this.onClickFunction.bind(this)}>
       </div>
     )
   }
