@@ -3,10 +3,13 @@
   flex-direction: row;
   flex-wrap: wrap;
   max-width: 340px;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .Boxes {
 display: grid;
+z-index: 0;
 }
 
 

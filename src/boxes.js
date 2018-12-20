@@ -8,29 +8,51 @@ class Box extends Component {
       styles:{
         width:'100px',
         height:'100px',
-        border: '2px solid black'
+        border: '2px solid black',
+        characterOnBoard: '',
+        pointerEvents: 'auto',
       }
     }
   }
 
-
-  GetBoxValue(e){
-    console.log("ID:", e.target.id);
+updateBox(){
+  let styles = {...this.state.styles}
+  if(this.props.gameState){
+    return
+  } else if(this.props.attemptNumber%2 === 0){
+    styles.characterOnBoard = 'X'
+    this.setState({styles})
+  } else {
+    styles.characterOnBoard = 'O'
+    this.setState({styles})
   }
+  styles.pointerEvents = 'none'
+    this.setState(styles)
+}
+
+listenForGameState(){
+  if(this.props.gameState){
+    return true
+  }
+}
+
+
+
+
 
 handleIndexChange(event){
     this.props.getIndex(event.target.id)
   }
 
   onClickFunction(event){
-    this.GetBoxValue(event)
     this.handleIndexChange(event)
-
+    this.updateBox()
   }
 
   render(){
     return (
       <div style={this.state.styles} id={this.props.id} className="Boxes" onClick={this.onClickFunction.bind(this)}>
+      {this.state.styles.characterOnBoard}
       </div>
     )
   }

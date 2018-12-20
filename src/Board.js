@@ -8,45 +8,57 @@ class Board extends Component {
     this.state = {
       attempt: 0,
       gameComplete: false,
+      winner: null,
       player1: [0,0,0,0,0,0,0,0,0],
       player2: [0,0,0,0,0,0,0,0,0],
       boardSize:9,
+      styles:{pointerEvents: 'none',}
     }
   }
+createBoardLayout(){
+    let arrayOfBoxes = []
+    let i = 0
+    while (i < 9){
+      arrayOfBoxes.push(<Box id={i} key={i} attemptNumber={this.state.attempt} getIndex={this.checkFunction.bind(this)} gameState={this.state.gameComplete}/>)
+      i ++
+    }return arrayOfBoxes
+  }
 
-updateBoard(index){
-  console.log("clicked");
+checkFunction(clickLocation){
+  let playerObject = this.updateBoard(clickLocation)
+  this.checkBoardandResult(playerObject)
+}
+
+updateBoard(clickLocation){
   let {attempt} = this.state
   if(attempt % 2 === 0){
     let player2 = [...this.state.player2];
-    player2.splice(index,1,1)
+    player2.splice(clickLocation,1,1)
     this.setState({player2 , attempt: attempt +1})
+    return {array:player2, player:"Player 2"}
     }else{
       let player1 = [...this.state.player1];
-      player1.splice(index,1,1)
+      player1.splice(clickLocation,1,1)
       this.setState({player1 , attempt: attempt +1})
+      return {array:player1, player:"Player 1"}
   }
 }
 
-createBoardLayout(){
-  let arrayOfBoxes = []
-  let i = 0
-  while (i < 9){
-    arrayOfBoxes.push(<Box id={i} key={i} attemptNumber={this.state.attempt} getIndex={this.updateBoard.bind(this)}/>)
-    i ++
-  }return arrayOfBoxes
-}
 
-checkBoardandResult(){
-  var player = [0,1,1,1,1,1,0,0,0]
+checkBoardandResult(playerObject){
+  let {gameComplete, winner, attempt} = this.state
   var winningPossibilites = [[0,1,2],[3,4,5],[6,7,8],
                               [0,3,6],[1,4,7],[2,5,8],
                               [0,4,8],[2,4,6]]
 
-var resultsArray = winningPossibilites.filter((value) => this.testGame(value, player))
-  return resultsArray.length > 0 ? true : false
+var resultsArray = winningPossibilites.filter((value) => this.testGame(value, playerObject.array))
+if(resultsArray.length > 0){
+  this.setState({gameComplete: true, winner: playerObject.player})
+}else if(resultsArray.length === 0 && attempt === 8){
+  this.setState({gameComplete: true, winner: "draw"})
 }
 
+}
 testGame(winningArray,playerArray){
   var counter = 0
   let status = false
@@ -60,10 +72,22 @@ testGame(winningArray,playerArray){
   }
 }
 
+listenForResult(){
+  let {gameComplete, winner} = this.state
+  if(gameComplete && winner === "draw"){
+    return "The Game is a Draw"
+  }else if(gameComplete){
+    return `${winner} is the winner`
+  }
+}
+
+
   render(){
 
+this.listenForResult()
+
     return (
-      <div className="board">
+      <div style={this.state.styles} className="board">
         {this.createBoardLayout()}
       </div>
     )
