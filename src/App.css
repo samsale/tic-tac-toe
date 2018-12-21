@@ -18,15 +18,26 @@ Body {
   text-align: center;
   display: flex;
   justify-content: center;
+  color: #990000;
 }
 
 .Game {
   height: 300px;
   width: 50%;
-  margin: 0 auto;
+  margin: 0 auto 50px;
   text-align: center;
   display: flex;
   justify-content: center;
+}
+
+.ScoreBoard{
+  height: 120px;
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+  justify-content: center;
+
+
 }
 
 .board{
@@ -44,13 +55,17 @@ Body {
 }
 
 .box{
-
       width:100px;
       height:100px;
       pointer-events: auto;
       color: #990000;
     }
 
+.ResetGame {
+  display: flex;
+  justify-content: center;
+  color: #990000;
+}
 
 /* .App {
   text-align: center;
