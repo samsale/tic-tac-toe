@@ -9,21 +9,34 @@ export default class Board extends Component {
       attempt: 0,
       player1Name: "Player 1",
       player1Score: 0,
+      player1Icon: "X",
       player2Name: "Player 2",
       player2Score: 0,
+      player2Icon: "O",
       gameComplete: false,
       winner: null,
+      gameBoard: ["","","","","","","","",""],
       player1: [0,0,0,0,0,0,0,0,0],
       player2: [0,0,0,0,0,0,0,0,0],
     }
   }
+
+
 createBoardLayout(){
-    let arrayOfBoxes = []
-    let i = 0
-    while (i < 9){
-      arrayOfBoxes.push(<Box id={i} key={i} attemptNumber={this.state.attempt} getIndex={this.checkFunction.bind(this)} gameState={this.state.gameComplete}/>)
-      i ++
-    }return arrayOfBoxes
+let freeze = null
+
+console.log("Sam",this.state.gameComplete);
+  if(this.state.gameComplete === false){
+    freeze = 'auto'
+  }else if (this.state.gameComplete === true){
+    freeze = 'none'
+  }
+    let arrayOfBoxes = this.state.gameBoard.map((value,i) => {return(
+      <Box id={i} key={i} attemptNumber={this.state.attempt}
+        getIndex={this.checkFunction.bind(this)} gameState={this.state.gameComplete}
+        letter={value} freezeBox={freeze}/> )})
+
+    return arrayOfBoxes
   }
 
 checkFunction(clickLocation){
@@ -31,23 +44,24 @@ checkFunction(clickLocation){
   this.checkBoardandResult(playerObject)
 }
 
+
 updateBoard(clickLocation){
   let {attempt} = this.state
+  let gameBoard = [...this.state.gameBoard]
   if(attempt % 2 === 0){
     let player2 = [...this.state.player2];
     player2.splice(clickLocation,1,1)
-    this.setState({player2 , attempt: attempt +1})
+    gameBoard.splice(clickLocation,1,this.state.player2Icon)
+    this.setState({player2 , attempt: attempt +1, gameBoard})
     return {array:player2, player:"Player 2"}
     } else{
       let player1 = [...this.state.player1];
       player1.splice(clickLocation,1,1)
-      this.setState({player1 , attempt: attempt +1})
+      gameBoard.splice(clickLocation,1,this.state.player1Icon)
+      this.setState({player1 , attempt: attempt +1, gameBoard})
       return {array:player1, player:"Player 1"}
   }
 }
-
-
-
 
 checkBoardandResult(playerObject){
   let {gameComplete, winner, attempt} = this.state
@@ -65,6 +79,7 @@ if(resultsArray.length > 0){
 }
 
 }
+
 testGame(winningArray,playerArray){
   var counter = 0
   let status = false
@@ -97,10 +112,7 @@ reset(){
   })
 }
 
-
-
-
-  render(){
+render(){
 console.log(this.state)
 this.listenForResult()
 

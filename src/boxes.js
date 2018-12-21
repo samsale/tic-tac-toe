@@ -3,48 +3,29 @@ import './App.css'
 import Board from './Board'
 
 
-
 export default class Box extends Component {
   constructor(props){
     super(props)
+    this.letter = ""
     this.state = {
-      styles:{
-        width:'100px',
-        height:'100px',
-        characterOnBoard: '',
-        pointerEvents: 'auto',
-        color: `#990000`,
-      }
-    }
-  }
-
-updateBox(){
-  let styles = {...this.state.styles}
-  if(this.props.gameState){
-    return
-  } else if(this.props.attemptNumber%2 === 0){
-    styles.characterOnBoard = 'X'
-    this.setState({styles})
-  } else {
-    styles.characterOnBoard = 'O'
-    this.setState({styles})
-  }
-  styles.pointerEvents = 'none'
-    this.setState(styles)
-}
-
-clearBoxes(){
-  this.setState({
-    styles:{
-      width:'100px',
-      height:'100px',
-      characterOnBoard: '',
       pointerEvents: 'auto',
-      color: `#990000`,
     }
-  })
-}
+  }
 
+updateBox(event){
+  let {pointerEvents} = this.state
+  console.log(this.props.gameState);
+  if(this.props.gameState){
+    return "complete"
+  } else if(this.props.attemptNumber%2 === 0){
+    this.letter='X'
+    this.forceUpdate()
+  } else {
+    this.letter='0'
+    this.forceUpdate()
+  }
+    this.setState({pointerEvents: 'none'})
+}
 
 handleIndexChange(event){
     this.props.getIndex(event.target.id)
@@ -52,14 +33,14 @@ handleIndexChange(event){
 
   onClickFunction(event){
     this.handleIndexChange(event)
-    this.updateBox()
+    this.updateBox(event.target.id)
   }
 
   render(){
-
+    console.log("props",this.props);
     return (
-        <div style={this.state.styles} id={this.props.id}  onClick={this.onClickFunction.bind(this)}>
-          {this.state.styles.characterOnBoard}
+        <div className="box" style={this.state} id={this.props.id}  onClick={this.onClickFunction.bind(this)}>
+          {this.props.letter}
         </div>
     )
   }

@@ -43,6 +43,13 @@ Body {
   background-repeat: no-repeat;
 }
 
+.box{
+
+      width:100px;
+      height:100px;
+      pointer-events: auto;
+      color: #990000;
+    }
 
 
 /* .App {
