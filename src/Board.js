@@ -2,17 +2,19 @@ import React, { Component } from 'react'
 import Box from './boxes.js'
 import './App.css'
 
-class Board extends Component {
+export default class Board extends Component {
   constructor(props){
     super(props)
     this.state = {
       attempt: 0,
+      player1Name: "Player 1",
+      player1Score: 0,
+      player2Name: "Player 2",
+      player2Score: 0,
       gameComplete: false,
       winner: null,
       player1: [0,0,0,0,0,0,0,0,0],
       player2: [0,0,0,0,0,0,0,0,0],
-      boardSize:9,
-      styles:{pointerEvents: 'none',}
     }
   }
 createBoardLayout(){
@@ -36,7 +38,7 @@ updateBoard(clickLocation){
     player2.splice(clickLocation,1,1)
     this.setState({player2 , attempt: attempt +1})
     return {array:player2, player:"Player 2"}
-    }else{
+    } else{
       let player1 = [...this.state.player1];
       player1.splice(clickLocation,1,1)
       this.setState({player1 , attempt: attempt +1})
@@ -45,15 +47,19 @@ updateBoard(clickLocation){
 }
 
 
+
+
 checkBoardandResult(playerObject){
   let {gameComplete, winner, attempt} = this.state
-  var winningPossibilites = [[0,1,2],[3,4,5],[6,7,8],
-                              [0,3,6],[1,4,7],[2,5,8],
-                              [0,4,8],[2,4,6]]
+  var winningPossibilites = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],
+                            [1,4,7],[2,5,8],[0,4,8],[2,4,6]]
 
 var resultsArray = winningPossibilites.filter((value) => this.testGame(value, playerObject.array))
 if(resultsArray.length > 0){
   this.setState({gameComplete: true, winner: playerObject.player})
+  for(let x of resultsArray[0]){
+    document.getElementById(x).style.color="black"
+  }
 }else if(resultsArray.length === 0 && attempt === 8){
   this.setState({gameComplete: true, winner: "draw"})
 }
@@ -75,23 +81,40 @@ testGame(winningArray,playerArray){
 listenForResult(){
   let {gameComplete, winner} = this.state
   if(gameComplete && winner === "draw"){
-    return "The Game is a Draw"
+    return "The Game is a Draw!"
   }else if(gameComplete){
-    return `${winner} is the winner`
+    return `${winner} is the winner!`
   }
 }
 
+reset(){
+  this.setState({
+    attempt:0,
+    gameComplete: false,
+    winner: null,
+    player1: [0,0,0,0,0,0,0,0,0],
+    player2: [0,0,0,0,0,0,0,0,0],
+  })
+}
+
+
+
 
   render(){
-
+console.log(this.state)
 this.listenForResult()
 
     return (
-      <div style={this.state.styles} className="board">
-        {this.createBoardLayout()}
+      <div>
+      <div className="Results">
+        <h1>{this.listenForResult()}</h1>
+      </div>
+      <div className="Game">
+        <div style={this.state.styles} className="board">
+          {this.createBoardLayout()}
+        </div>
+      </div>
       </div>
     )
   }
 }
-
-export default Board

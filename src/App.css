@@ -1,16 +1,48 @@
-.board{
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  max-width: 340px;
-  pointer-events: none;
-  z-index: 1;
+Body {
+ user-select: none;
 }
 
-.Boxes {
-display: grid;
-z-index: 0;
+.Header {
+  font-size: 50px;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+
 }
+
+
+.Results{
+  height: 90px;
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.Game {
+  height: 300px;
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.board{
+  display: grid;
+  grid-template-columns: 100px 100px 100px;
+  grid-template-rows: 100px 100px 100px;
+  pointer-events: none;
+  /* font-family: 'Permanent Marker', cursive; */
+  text-align: center;
+  line-height: 100px;
+  font-size: 80px;
+  background-image: url('./imgs/tic-tac-toe-bg.png');
+  background-size: 300px 305px;
+  background-repeat: no-repeat;
+}
+
 
 
 /* .App {

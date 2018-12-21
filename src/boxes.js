@@ -1,16 +1,19 @@
 import React, { Component } from 'react'
 import './App.css'
+import Board from './Board'
 
-class Box extends Component {
+
+
+export default class Box extends Component {
   constructor(props){
     super(props)
     this.state = {
       styles:{
         width:'100px',
         height:'100px',
-        border: '2px solid black',
         characterOnBoard: '',
         pointerEvents: 'auto',
+        color: `#990000`,
       }
     }
   }
@@ -30,14 +33,17 @@ updateBox(){
     this.setState(styles)
 }
 
-listenForGameState(){
-  if(this.props.gameState){
-    return true
-  }
+clearBoxes(){
+  this.setState({
+    styles:{
+      width:'100px',
+      height:'100px',
+      characterOnBoard: '',
+      pointerEvents: 'auto',
+      color: `#990000`,
+    }
+  })
 }
-
-
-
 
 
 handleIndexChange(event){
@@ -50,12 +56,11 @@ handleIndexChange(event){
   }
 
   render(){
+
     return (
-      <div style={this.state.styles} id={this.props.id} className="Boxes" onClick={this.onClickFunction.bind(this)}>
-      {this.state.styles.characterOnBoard}
-      </div>
+        <div style={this.state.styles} id={this.props.id}  onClick={this.onClickFunction.bind(this)}>
+          {this.state.styles.characterOnBoard}
+        </div>
     )
   }
 }
-
-export default Box
